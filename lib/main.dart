@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_flutter/pdf_flutter.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 void main(){
   runApp(pdf_maker());
@@ -33,20 +34,37 @@ class _Home_PageState extends State<Home_Page> {
         child: file != null ? PDF.file(file, height: 700, width: 500,)
           : Text("Open a Pdf"), 
       ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            File picked_file = await FilePicker.getFile(
-              type: FileType.custom,
-              allowedExtensions: ['pdf'],
-            );
-            setState(() {
-              file = picked_file;
-            });
-          },
-          child: Icon(Icons.picture_as_pdf),
-          tooltip: "Open Pdf",
-          splashColor: Colors.deepPurpleAccent,
+      // IconButton(
+      //   onPressed: (){},
+      //   icon: Icons.create_new_folder,
+      // ),
+      floatingActionButton: SpeedDial(
+        tooltip: "Tap",
+        child: Icon(Icons.menu),
+        children: [
+          SpeedDialChild(
+            child: Icon(Icons.picture_as_pdf),
+            label: 'Open Pdf',
+            onTap: () async {
+              File picked_file = await FilePicker.getFile(
+                type: FileType.custom,
+                allowedExtensions: ['pdf'],
+              );
+              setState(() {
+                file = picked_file;
+              });
+            },
           ),
+          SpeedDialChild(
+            label: "Create Pdf",
+            child: Icon(Icons.create_new_folder),
+            onTap: () {
+              
+            },
+          ),
+        ],
+      ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
