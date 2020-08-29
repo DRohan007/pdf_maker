@@ -18,8 +18,10 @@ public final class GeneratedPluginRegistrant {
     flutterEngine.getPlugins().add(new com.mr.flutter.plugin.filepicker.FilePickerPlugin());
       io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin.registerWith(shimPluginRegistry.registrarFor("io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin"));
     flutterEngine.getPlugins().add(new com.vitanov.multiimagepicker.MultiImagePickerPlugin());
+      com.javih.multimediapicker.MultiMediaPickerPlugin.registerWith(shimPluginRegistry.registrarFor("com.javih.multimediapicker.MultiMediaPickerPlugin"));
     flutterEngine.getPlugins().add(new io.flutter.plugins.pathprovider.PathProviderPlugin());
       com.erluxman.pdf_flutter.PdfFlutterPlugin.registerWith(shimPluginRegistry.registrarFor("com.erluxman.pdf_flutter.PdfFlutterPlugin"));
     flutterEngine.getPlugins().add(new com.tekartik.sqflite.SqflitePlugin());
+    flutterEngine.getPlugins().add(new io.flutter.plugins.videoplayer.VideoPlayerPlugin());
   }
 }
