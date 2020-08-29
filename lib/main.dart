@@ -27,30 +27,55 @@ class Home_Page extends StatefulWidget {
 
 class _Home_PageState extends State<Home_Page> {
   final pdf = pw.Document();
+  List<File> temp;
   File file;
   void generate_pdf() async {
-  File temp = await FilePicker.getFile(
-    type: FileType.custom,
-    allowedExtensions: ['jpeg'],
-              //  allowedExtensions: ['pdf'],
-              );
+    try {
+      temp = await FilePicker.getMultiFile(
+        type: FileType.image,
+        allowCompression: true,
+      );
+    } 
+    on Exception catch (e) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error....'),
+              content: Text('Unsupported exception: $e'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('OK'),
+                  onPressed: () {},
+                )
+              ],
+            );
+          });
+    }
   
-  final image = PdfImage.file(
-  pdf.document,
-  bytes: temp.readAsBytesSync(),
+final images = await temp.map(
+  (cnv) => PdfImage.file(
+    pdf.document,
+    bytes: cnv.readAsBytesSync(),
+  ),
 );
 
-pdf.addPage(pw.Page(
-    build: (pw.Context context) {
-      return pw.Center(
-        child: pw.Image(image),
-      );// Center
-    }));
-    //write to file
-    final op = await getExternalStorageDirectory();
-    String pathtowrite = op.path + '/test2.pdf';
-    File op_file = File(pathtowrite);
-    await op_file.writeAsBytesSync(pdf.save());
+pdf.addPage(pw.MultiPage(
+    build: (pw.Context context) => <pw.Widget>[
+      ...images.map((image){
+        return pw.Container(height: 100,child: pw.Image(image));
+      }).toList(),
+
+    ],
+),
+);
+     //write to file
+     final op = await getExternalStorageDirectory();
+     
+     String pathtowrite = op.path + '/test3.pdf';
+     File op_file = File(pathtowrite);
+     print(pathtowrite);
+     await op_file.writeAsBytesSync(pdf.save());
   }
   @override
   Widget build(BuildContext context) {
@@ -96,4 +121,10 @@ pdf.addPage(pw.Page(
     );
   }
 }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
 //
