@@ -6,6 +6,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf_flutter/pdf_flutter.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'pdf_page.dart';
 
 void main(){
   runApp(pdf_maker());
@@ -57,13 +58,18 @@ final images = await temp.map(
   (cnv) => PdfImage.file(
     pdf.document,
     bytes: cnv.readAsBytesSync(),
+    orientation: PdfImageOrientation.topRight,
   ),
 );
 
 pdf.addPage(pw.MultiPage(
     build: (pw.Context context) => <pw.Widget>[
       ...images.map((image){
-        return pw.Container(height: 100,child: pw.Image(image));
+        return pw.Center(
+          child: pw.Image(image),
+          // heightFactor: 10.0,
+          // widthFactor: 60.0,
+          );
       }).toList(),
 
     ],
@@ -72,7 +78,7 @@ pdf.addPage(pw.MultiPage(
      //write to file
      final op = await getExternalStorageDirectory();
      
-     String pathtowrite = op.path + '/test3.pdf';
+     String pathtowrite = op.path + '/test5.pdf';
      File op_file = File(pathtowrite);
      print(pathtowrite);
      await op_file.writeAsBytesSync(pdf.save());
@@ -83,9 +89,15 @@ pdf.addPage(pw.MultiPage(
       appBar: AppBar(
         title: Text("Pdf Maker"),
       ),
-      body: Center(
-        child: file != null ? PDF.file(file, height: 700, width: 500,)
-          : Text("Open a Pdf"), 
+      body: SingleChildScrollView(
+        child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+             Center(
+                child: Text("Pdf Maker"),
+                   ),
+        ],
+      ),
       ),
       // IconButton(
       //   onPressed: (){},
@@ -106,6 +118,10 @@ pdf.addPage(pw.MultiPage(
               setState(() {
                 file = picked_file;
               });
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => pdf_show(file),
+                ),
+                );
             },
           ),
           SpeedDialChild(
@@ -122,9 +138,4 @@ pdf.addPage(pw.MultiPage(
   }
 }
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
 //
