@@ -70,7 +70,7 @@ pdf.addPage(pw.MultiPage(
      //write to file
      final op = await getExternalStorageDirectory();
      
-     String pathtowrite = op.path + 'test.pdf';
+     String pathtowrite = op.path + '$pdf_name.pdf';
      File op_file = File(pathtowrite);
      print('$pdf_name');
      print(pathtowrite);
@@ -95,6 +95,9 @@ pdf.addPage(pw.MultiPage(
                       ),
                       child: Center(
                         child: TextField(
+                          onChanged: (text){
+                            pdf_name = text;
+                          },
                               ),
                             ),
                           ),
