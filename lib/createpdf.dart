@@ -12,14 +12,6 @@ class pdf_create extends StatefulWidget {
 
 class _pdf_createState extends State<pdf_create> {
   String pdf_name;
-  final myController = TextEditingController();
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    myController.dispose();
-    super.dispose();
-  }
   final pdf = pw.Document();
   List<File> temp;
   void generate_pdf() async {
