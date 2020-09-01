@@ -64,8 +64,6 @@ pdf.addPage(pw.MultiPage(
      
      String pathtowrite = op.path + '$pdf_name.pdf';
      File op_file = File(pathtowrite);
-     print('$pdf_name');
-     print(pathtowrite);
      await op_file.writeAsBytesSync(pdf.save());
   }
   @override
