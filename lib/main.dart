@@ -28,7 +28,6 @@ class Home_Page extends StatefulWidget {
 
 class _Home_PageState extends State<Home_Page> {
   File file;
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

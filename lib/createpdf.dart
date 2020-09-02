@@ -11,6 +11,7 @@ class pdf_create extends StatefulWidget {
 }
 
 class _pdf_createState extends State<pdf_create> {
+  final List<TableRow> row = <TableRow>[];
   String pdf_name;
   final pdf = pw.Document();
   List<File> temp;
@@ -47,15 +48,18 @@ final images = await temp.map(
 );
 
 pdf.addPage(pw.MultiPage(
+  pageFormat: PdfPageFormat.standard,
+  margin: pw.EdgeInsets.all(5.0),
     build: (pw.Context context) => <pw.Widget>[
-      ...images.map((image){
-        return pw.Center(
-          child: pw.Image(image),
-          // heightFactor: 10.0,
-          // widthFactor: 60.0,
+        pw.Table(
+          children: [
+                ...images.map((image){
+        return pw.TableRow(
+          children: [pw.Image(image),]
           );
       }).toList(),
-
+          ]
+        ),
     ],
 ),
 );
@@ -69,37 +73,31 @@ pdf.addPage(pw.MultiPage(
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Creating Pdf"
+        ),
+      ),
       body: Center(
-        child: Row(
-          children: [
-            Column(
-              children: [
-                Container(
-              padding: EdgeInsets.only(left: 5.0),
-                      height: 50,
-                      width: 300,
-                      decoration: BoxDecoration(
-                        color: Colors.white70,
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Center(
-                        child: TextField(
-                          onChanged: (text){
-                            pdf_name = text;
-                          },
-                              ),
-                            ),
-                          ),
-              MaterialButton(
-                child: Text('Make pdf from images'),
+        child: AlertDialog(
+          title: Text("Set Pdf file name"),
+          content: TextField(
+            onChanged: (text){
+               pdf_name = text;
+            }
+          ),
+          actions: [
+            MaterialButton(
+              elevation: 40.0,
+                splashColor: Colors.deepPurpleAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Text('Select Images'),
                 onPressed: (){
                   generate_pdf();
                   Navigator.pop(context);
                 },
-              ),
-
-              ],
             ),
           ],
         ),
